@@ -1,0 +1,12 @@
+build/
+*.o
+*.elf
+*.bin
+*.hex
+*.map
+# STM32CubeIDE / Eclipse workspace files
+.metadata/
+.settings/
+Debug/
+Release/
+*.launch
