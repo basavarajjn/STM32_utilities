@@ -1,0 +1,25 @@
+name: build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        example: [spi_loopback, spi_master_slave]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ARM GCC
+        run: sudo apt-get update && sudo apt-get install -y gcc-arm-none-eabi libnewlib-arm-none-eabi
+      - name: Build ${{ matrix.example }} (warnings are errors)
+        run: make EXAMPLE=${{ matrix.example }} CFLAGS_EXTRA=-Werror
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.example }}
+          path: |
+            build/${{ matrix.example }}/*.elf
+            build/${{ matrix.example }}/*.bin
+            build/${{ matrix.example }}/*.hex
